@@ -31,7 +31,7 @@ FROM raetro/quartus:base
 COPY --from=install /opt/intelFPGA/ /opt/intelFPGA/
 
 # Load the library from the host system.
-ENV LD_PRELOAD=/usr/lib/libtcmalloc_minimal.so.4
+ENV LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libtcmalloc_minimal.so.4
 
 # Metadata Params
 ARG BUILD_DATE
