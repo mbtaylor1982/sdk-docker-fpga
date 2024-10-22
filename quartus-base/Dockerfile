@@ -4,7 +4,7 @@
 # SPDX-FileCopyrightText: (c) 2022, Marcus Andrade
 ################################################################################
 
-FROM debian:stretch-slim
+FROM debian:bookworm-slim
 
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -80,7 +80,8 @@ RUN apt-get update                          && \
                        make                    \
                        nano                    \
                        net-tools               \
-                       openjdk-8-jdk           \
+                       openjdk-17-jre          \
+                       libpng16-16             \
                        pkg-config              \
                        python3-pip             \
                        rsync                   \
@@ -110,17 +111,13 @@ ENV LC_ALL=en_US.UTF-8
 WORKDIR /tmp
 
 # Copy libpng, Github CLI and Changelog generator
-ARG GH_VERSION="2.14.2"
-ARG CHGLOG_VERSION="0.15.1"
-ADD libs/libpng12-0_1.2.54-1ubuntu1.1_amd64.deb .
-ADD libs/libpng12-0_1.2.54-1ubuntu1.1_i386.deb .
+ARG GH_VERSION="2.54.0"
+ARG CHGLOG_VERSION="0.15.4"
 ADD https://github.com/cli/cli/releases/download/v${GH_VERSION}/gh_${GH_VERSION}_linux_amd64.deb .
 ADD https://github.com/git-chglog/git-chglog/releases/download/v${CHGLOG_VERSION}/git-chglog_${CHGLOG_VERSION}_linux_amd64.tar.gz .
 
 # Install libpng, Github CLI and Changelog generator
-RUN dpkg -i libpng12-0_1.2.54-1ubuntu1.1_amd64.deb \
-            libpng12-0_1.2.54-1ubuntu1.1_i386.deb  \
-            gh_${GH_VERSION}_linux_amd64.deb
+RUN dpkg -i gh_${GH_VERSION}_linux_amd64.deb
 
 RUN tar -zxf git-chglog_${CHGLOG_VERSION}_linux_amd64.tar.gz && \
     chmod a+x git-chglog                                     && \
